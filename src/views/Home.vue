@@ -45,7 +45,7 @@
 
                 <v-card-text class="subtitle-1">
                     <v-text-field v-model="subName" label="Название подписки" required></v-text-field>
-                    <v-text-field v-model="subPrice" label="Стоимость попдиски" required></v-text-field>
+                    <v-text-field v-model="subPrice" label="Стоимость подписки" required></v-text-field>
 
                 </v-card-text>
                 <v-card-actions class="justify-center">
