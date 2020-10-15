@@ -3,11 +3,12 @@
         <v-layout class="text-center" column="column">
             <v-flex xs12="xs12" md10="md10">
                 <div>
-                    <p class="headline text--primary">
+                    <p v-if="allSubPrice > 0" class="headline text--primary">
                         Суммарно вы тратите на подписки {{ allSubPrice }}₽ ежемесячно. При текущих
                         подписках вы потратите {{ allSubPrice*12 }}₽ за
                         год.
                     </p>
+                    <p v-else class="headline text--primary">Похоже вы еще не ведете учет подписок!</p>
                 </div>
                 <v-row>
                     <v-col cols="12" sm="4" v-for="sub in subs" :key="sub.name">
@@ -64,11 +65,10 @@
                 dialog: false,
                 subName: "",
                 subPrice: 0,
-                allSubPrice: 0,
             }
         },
         computed: {
-            ...mapState(["subs"]),
+            ...mapState(["subs", "allSubPrice"]),
         },
         methods: {
             ...mapActions(["addSub"]),
@@ -80,6 +80,7 @@
                 }
                 this.subName = "";
                 this.subPrice = 0;
+                this.dialog = false;
             }
         }
     }
