@@ -1,34 +1,35 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
+import SecureLS from 'secure-ls';
+
+let ls = new SecureLS({isCompression: false});
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        lang: undefined,
-        isAuth: false,
-        profile: ""
-    },
-    getters: {
-        lang: state => {
-            return state.lang;
-        },
-        isAuth: state => {
-            return state.isAuth;
-        },
-        profile: state => {
-            return state.profile
-        }
+        subs: [],
     },
     mutations: {
-        setLang: (state, payload) => {
-            state.lang = payload;
+        setSubs: (state, payload) => {
+            state.subs = payload;
         },
-        setIsAuth: (state, payload) => {
-            state.isAuth = payload;
-        },
-        setProfile: (state, payload) => {
-            state.profile = payload;
+        addNewSub: (state, payload) => {
+            state.subs.push(payload);
         }
-    }
+    },
+    actions: {
+        addSub({commit}, {name, price}) {
+            commit("addNewSub", {name: name, price: price});
+        }
+    },
+    plugins: [createPersistedState({
+        paths: ['subs'],
+        storage: {
+            getItem: (key) => ls.get(key),
+            setItem: (key, value) => ls.set(key, value),
+            removeItem: (key) => ls.remove(key),
+        }
+    })]
 });
